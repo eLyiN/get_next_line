@@ -6,7 +6,7 @@
 /*   By: aarribas <aarribas@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/01 23:46:24 by aarribas          #+#    #+#             */
-/*   Updated: 2022/05/02 17:28:39 by aarribas         ###   ########.fr       */
+/*   Updated: 2022/05/03 16:22:53 by aarribas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,3 +30,4 @@ char    *get_next_line(int fd)
         return(NULL);
     }
 }
+
