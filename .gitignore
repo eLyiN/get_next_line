@@ -1,1 +1,5 @@
 .*
+/gnlTester/
+/tests/
+get_next_line
+main.c

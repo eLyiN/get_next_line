@@ -6,106 +6,87 @@
 /*   By: aarribas <aarribas@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 08:50:36 by aarribas          #+#    #+#             */
-/*   Updated: 2022/05/02 17:28:38 by aarribas         ###   ########.fr       */
+/*   Updated: 2022/05/06 11:05:21 by aarribas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void    *ft_memcpy(void *dest, const void *src, size_t n)
+size_t	ft_strlen(const char *str)
 {
-        unsigned char *dest_temp;
-        unsigned char *src_temp;
-        size_t i;
+	int	i;
 
-        i = 0;
-        dest_temp = (unsigned char *)dest;
-        src_temp = (unsigned char *)src;
-
-        if (dest == NULL && src == NULL)
-                return (NULL);
-        while (i < n)
-        {
-                dest_temp[i] = src_temp[i];
-                i++;
-        }
-        return (dest);
+	i = 0;
+	while (str[i])
+	{
+		i++;
+	}
+	return (i);
 }
 
-char    *ft_strdup(const char *s)
+int	found_newline(t_gnl *mybuffer)
 {
-    char *str;
-    int i;
+	int		i;
+	t_gnl	*current;
 
-    i = 0;
-    if(!(str = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1))))
-    {
-        return (NULL);
-    }
-                while (s[i])
-                {
-                        str[i] = (char)s[i];
-                        i++;
-                }
-        str[i] = '\0';
-    return (str);
+	if (mybuffer == NULL)
+		return (0);
+	current = ft_lst_get_last(mybuffer);
+	i = 0;
+	while (current->data[i])
+	{
+		if (current->data[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
-char    *ft_strchr(const char *s, int c)
+t_gnl	*ft_lst_get_last(t_gnl *mybuffer)
 {
-        while (*s)
-        {
-                if (*s == c || *s == '\0')
-                return ((char *)s);
-                else
-                {
-                        s++;
-                }
-        }
-        if (*s == c)
-        {
-                return ((char *)s);
-        }
-        return (NULL);
+	t_gnl	*current;
+
+	current = mybuffer;
+	while (current && current->next)
+		current = current->next;
+	return (current);
 }
 
-size_t  ft_strlen(const char *str)
+void	make_line(t_gnl *mybuffer, char **line)
 {
-        int     i;
+	int	i;
+	int	len;
 
-        i = 0;
-        while (str[i])
-        {
-                i++;
-        }
-        return (i);
+	len = 0;
+	while (mybuffer)
+	{
+		i = 0;
+		while (mybuffer->data[i])
+		{
+			if (mybuffer->data[i] == '\n')
+			{
+				len++;
+				break ;
+			}
+			len++;
+			i++;
+		}
+		mybuffer = mybuffer->next;
+	}
+	*line = malloc(sizeof(char) * (len + 1));
 }
 
-char    *ft_strjoin(char const *s1, char const *s2)
+void	free_buffer(t_gnl *mybuffer)
 {
-    char *new_str;
-    size_t i;
-    size_t j;
+	t_gnl *current;
+	t_gnl *next;
 
-    if(s1 && s2)
-    {
-    if(!(new_str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + (ft_strlen(s2) + 1)))))
-    return (NULL);
-    i = 0;
-    while(s1[i] != '\0')
-    {
-        new_str[i] = s1[i];
-        i++;
-    }
-    j = 0;
-    while(s2[j] != '\0')
-    {
-        new_str[i] = s2[j];
-        i++;
-        j++;
-    }
-    new_str[i] = '\0';
-    return (new_str);
-    }
-    return (NULL);
+	current = mybuffer;
+	while (current)
+	{
+		free(current->data);
+		next = current->next;
+		free(current);
+		current = next;
+	}
 }
